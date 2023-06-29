@@ -22,4 +22,4 @@ Take care about how to make program.
 </p>
 
 <h6>Failure notification settings</h6>
-Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by users. Some errors happen but don't affect the 
+Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by users. Some errors happen but don't affect the workflow. 
