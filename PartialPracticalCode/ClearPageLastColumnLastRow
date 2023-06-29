@@ -1,0 +1,8 @@
+function clearRangePage(){
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('SheetName');
+  var lastColumn = ss.getLastColumn();
+  //A1 is example. use the started cell number.
+  var range = ss.getRange("A1:" + ss.getRange(ss.getLastRow(), lastColumn).getA1Notation());
+
+  range.clearContent();
+}
