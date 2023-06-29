@@ -1,0 +1,15 @@
+function clickDataAppendButton(){
+var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet Name");
+var ui = SpreadsheetApp.getUi();
+var response = ui.alert('Did you checked the data?', ui.ButtonSet.YES_NO);
+
+if(ss.getLastRow > 1){
+  if (response == ui.Button.YES) {
+    //Data append funtion
+  } else {
+    //Add No Event
+  }
+}else{
+  SpreadsheetApp.getUi().alert("There is no Data!");
+}
+}
