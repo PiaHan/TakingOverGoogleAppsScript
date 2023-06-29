@@ -23,3 +23,11 @@ Take care about how to make program.
 
 <h6>Failure notification settings</h6>
 Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by users. Some errors happen but don't affect the workflow. 
+
+<h6>Permission</h6>
+<p>
+  If the user is new to the program or have not enough permission, There might be permission Error.
+  Ex. Access Denied.
+  If this case happens, go to the <b>Google Colud -> IAM -> add the permission to user's account</b>
+  I made a custom permission 'Warehouse', It is over-permissioned position but I will change it if I have time.
+</p>
