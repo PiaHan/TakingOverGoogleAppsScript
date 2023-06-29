@@ -13,3 +13,10 @@ Take care about how to make program.
   <li>If the sheet page is not cleared, it is editable page. And DB table is CREATE OR REPLACED everytime user update the data</li>
   <li>If the data has to be Unique, Check the data is exist in the DB before INSERT the data.(Using SELECT ~ WHERE ~)</li>
 </ul>
+
+
+<h5>Sheet</h5>
+<h6>onEdit</h6>
+<p>
+  onEdit is the trigger that happens everytime user edit something(make event). If developer wants to access the DB using onEdit, developer should add the event at the Trigger Menu<b>(Apps Script -> Triggers(sidebar) -> Add Trigger)</b> 
+</p>
