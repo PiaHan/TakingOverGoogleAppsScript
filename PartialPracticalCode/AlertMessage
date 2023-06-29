@@ -1,0 +1,15 @@
+//Simple Alert Message
+SpreadsheetApp.getUi().alert("Alert Message");
+
+//Yes - No Alert Page
+function alertYNPopup(){
+var ui = SpreadsheetApp.getUi();
+var response = ui.alert('Alert message', ui.ButtonSet.YES_NO);
+
+// Process the user's response.
+  if (response == ui.Button.YES) {
+    //add Yes event
+  } else {
+    //add No event
+  }
+}
