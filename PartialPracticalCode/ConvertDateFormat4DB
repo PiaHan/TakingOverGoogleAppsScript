@@ -1,0 +1,16 @@
+//Change the data format to 'DATE' FORMAT
+function convertDateFormat(originalDate) {
+  var date = new Date(originalDate);
+  var formattedDate = Utilities.formatDate(date, Session.getScriptTimeZone(), "yyyy-MM-dd");
+  return formattedDate;
+}
+
+//If the data appears with 'Today' or 'Yesterday' format
+if(date_column[i] == "Today"){
+  date_column[i] = new Date();
+}else if(date_column[i] == "Yesterday"){
+  date_column[i] = new Date();
+  date_column[i] = date_column[i].setDate(date_column[i].getDate() - 1);
+}
+//Use the previous function again
+date_column[i] = convertDateFormat(date_column[i]);
