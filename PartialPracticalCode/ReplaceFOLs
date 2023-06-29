@@ -1,0 +1,28 @@
+//FOL, FBA
+//Amz report make -FOLn -FBAn tag behind the SKU code
+//Sometimes -FBAn-FOLn or -FOLn-FBAn form happens to this code has to be repeated.
+
+function replaceFOLs(sku){
+    sku = sku.replace('-FBA1', '');
+    sku = sku.replace('-FBA2', '');
+    sku = sku.replace('-FBA3', '');
+    sku = sku.replace('-FBA4', '');
+    sku = sku.replace('-FBA', '');
+    sku = sku.replace('-FOL1', '');
+    sku = sku.replace('-FOL2', '');
+    sku = sku.replace('-FOL3', '');
+    sku = sku.replace('-FOL4', '');
+    sku = sku.replace('-FOL', '');
+    sku = sku.replace('-FBA1', '');
+    sku = sku.replace('-FBA2', '');
+    sku = sku.replace('-FBA3', '');
+    sku = sku.replace('-FBA4', '');
+    sku = sku.replace('-FBA', '');
+    sku = sku.replace('-FOL1', '');
+    sku = sku.replace('-FOL2', '');
+    sku = sku.replace('-FOL3', '');
+    sku = sku.replace('-FOL4', '');
+    sku = sku.replace('-FOL', '');
+
+    return sku;
+}
