@@ -20,3 +20,6 @@ Take care about how to make program.
 <p>
   onEdit is the trigger that happens everytime user edit something(make event). If developer wants to access the DB using onEdit, developer should add the event at the Trigger Menu<b>(Apps Script -> Triggers(sidebar) -> Add Trigger)</b> 
 </p>
+
+<h6>Failure notification settings</h6>
+Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by users. Some errors happen but don't affect the 
