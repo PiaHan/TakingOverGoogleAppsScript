@@ -31,3 +31,8 @@ Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by us
   If this case happens, go to the <b>Google Colud -> IAM -> add the permission to user's account</b>
   I made a custom permission 'Warehouse', It is over-permissioned position but I will change it if I have time.
 </p>
+
+<h6>Connect Google Spread Sheet to Big Query</h6>
+<p>
+  <b>Apps Script -> Services -> press '+' button -> Add BigQuery, Google Spread Sheet</b>
+</p>
