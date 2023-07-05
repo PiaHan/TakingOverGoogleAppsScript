@@ -39,4 +39,6 @@ Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by us
 
 <h5>Frequent issue happen</h5>
 1. A stock's upc pop up when scan the B stock / No table error happen 
-In this case, User might use sheets while updating DB. Because LV's data is 
+In this case, User might use sheets while updating DB. Sometimes updater forgot to run the 'initial Setting' Code. 
+2. Date format error.
+User might change the date format or 
