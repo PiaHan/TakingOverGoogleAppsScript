@@ -40,8 +40,7 @@ Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by us
 <h5>All sheet users should know</h5>
 <ul>
   <li>Don't make a blank row middle of the sheet list. Sunny trying to take care about it but in some pages, error could happen.</li>
-  <li>Don't use the functions too fast. To make the sheet use automatically, to make the user comfortable to use, Most of the sheets use 'onEdit' Trigger. This is Trigger works everytime user make a difference in the sheet.</li>
-  <li><a href="https://developers.google.com/apps-script/guides/triggers?hl=ko">Trigger link</a></li>
+  <li>Don't use the functions too fast. To make the sheet use automatically, to make the user comfortable to use, Most of the sheets use 'onEdit' Trigger. This is Trigger works everytime user make a difference in the sheet. <a href="https://developers.google.com/apps-script/guides/triggers?hl=ko">Trigger Reference link</a></li>
   
 </ul>
 
