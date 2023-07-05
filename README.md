@@ -37,6 +37,14 @@ Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by us
   <b>Apps Script -> Services -> press '+' button -> Add BigQuery, Google Spread Sheet</b>
 </p>
 
+<h5>All sheet users should know</h5>
+<ul>
+  <li>Don't make a blank row middle of the sheet list. Sunny trying to take care about it but in some pages, error could happen.</li>
+  <li>Don't use the functions too fast. To make the sheet use automatically, to make the user comfortable to use, Most of the sheets use 'onEdit' Trigger. This is Trigger works everytime user make a difference in the sheet.</li>
+  <li><a href="https://developers.google.com/apps-script/guides/triggers?hl=ko">Trigger link</a></li>
+  
+</ul>
+
 <h5>Frequent issue happen</h5>
 1. A stock's upc pop up when scan the B stock / No table error happen <br>
 In this case, User might use sheets while updating DB. Sometimes updater forgot to run the 'initial Setting' Code. <br>
