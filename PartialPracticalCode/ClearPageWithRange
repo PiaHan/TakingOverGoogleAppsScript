@@ -1,0 +1,10 @@
+//use it when you have to delete list of same format pages ex. label page
+
+function clearLabelPage(sheetName){
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+
+  //A1:D1 is example
+  range = ss.getRange("A1:D1");
+
+  range.clearContent();
+}
