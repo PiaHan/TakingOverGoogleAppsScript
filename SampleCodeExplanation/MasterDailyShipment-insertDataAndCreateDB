@@ -1,0 +1,315 @@
+function clickSortOrders(){
+  clearSortedList();
+  sortOrderDataAM();
+  sortOrderDataPM();
+}
+
+function sortOrderDataAM() {
+var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('dev_AM PM PICK LIST');
+
+//1. Select data from Orderlist 
+//sw num - am
+var sn_range = ss.getRange('A3:A' + ss.getLastRow()); 
+var sn_data = sn_range.getValues(); 
+var sn_column = sn_data.map(function(row) { return row[0]; });
+
+//qty - am
+var q_range = ss.getRange('B3:B' + ss.getLastRow()); 
+var q_data = q_range.getValues(); 
+var q_column = q_data.map(function(row) { return row[0]; });
+
+//sku_lv - am
+var sku_range = ss.getRange('C3:C' + ss.getLastRow()); 
+var sku_data = sku_range.getValues(); 
+var sku_column = sku_data.map(function(row) { return row[0]; });
+
+Logger.log("ss.getLastRow() : " + ss.getLastRow());
+var projectId = 'avlgear-erp-v-1-0';
+var datasetId = 'avlgear_erp';
+
+const request = {
+query : "CREATE or REPLACE Table  " + projectId + ".avlgear_erp.MDSAMList (sw_num STRING, qty INTEGER, SKU STRING, rownum INTEGER );",
+useLegacySql: false
+};
+let queryResults = BigQuery.Jobs.query(request, projectId);
+
+
+//2. Upload Order Input log table
+var insert_code = "INSERT INTO " + projectId + "." + datasetId + ".MDSAMList (sw_num, qty, SKU, rownum) VALUES "
+for(var i = 0; i < parseInt(sn_column.length); i++){
+if(sku_column[i].length != 0){
+    insert_code += "('" + sn_column[i] + "', "+ q_column[i] + ", '"  +  sku_column[i] + "', " + i + "),";
+}
+} 
+insert_code = insert_code.slice(0, -1) + ";";
+
+Logger.log("insert_code : " + insert_code);
+
+const request_insert = {
+    query : insert_code,
+    useLegacySql: false
+  };
+let queryResults_insert = BigQuery.Jobs.query(request_insert, projectId);
+
+
+var selectDistinctOrder = "SELECT distinct sw_num, qty, CASE " +
+                        "WHEN SKU LIKE '%-FOL' THEN REPLACE(SKU, '-FOL', '') " +
+                        "WHEN SKU LIKE '%-FOL1' THEN REPLACE(SKU, '-FOL1', '') " +
+                        "WHEN SKU LIKE '%-FOL2' THEN REPLACE(SKU, '-FOL2', '') " +
+                        "WHEN SKU LIKE '%-FOL3' THEN REPLACE(SKU, '-FOL3', '') " +
+                        "WHEN SKU LIKE '%-FBA' THEN REPLACE(SKU, '-FBA', '') " +
+                        "ELSE SKU END as sku_pick FROM `avlgear-erp-v-1-0.avlgear_erp.MDSAMList` Order by sku_pick;";
+const request_selectDorder = {
+    query : selectDistinctOrder,
+    useLegacySql: false
+  };
+let queryResults_selectDOrder = BigQuery.Jobs.query(request_selectDorder, projectId);
+
+var resultCount = queryResults_selectDOrder.getTotalRows();
+var resultSchema = queryResults_selectDOrder.getSchema();
+var resultValues = new Array(resultCount);
+var tableRows = queryResults_selectDOrder.getRows();
+
+if(resultCount > 0){
+// Iterate through query results
+for (var i = 0; i < tableRows.length; i++) {
+  var cols = tableRows[i].getF();
+  resultValues[i] = new Array(cols.length);
+  // For each column, add values to the result array
+  for (var j = 0; j < cols.length; j++) {
+    resultValues[i][j] = cols[j].getV();
+  }
+  ss.getRange("I" + (i+3)).setValue(resultValues[i][0]);
+  ss.getRange("J" + (i+3)).setValue(resultValues[i][1]);
+  ss.getRange("K" + (i+3)).setValue(resultValues[i][2]);
+
+}
+}
+
+
+}
+
+function sortOrderDataPM(){
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('dev_AM PM PICK LIST');
+  var projectId = 'avlgear-erp-v-1-0';
+  var datasetId = 'avlgear_erp';
+  //read Unpicked Am List
+
+  var lastRowNumber = selectUnpickedAmList();
+  //read Added Pick list
+  selectPMOrderList(lastRowNumber);
+
+  var selectDistinctOrder = "SELECT distinct sw_num, qty, CASE " +
+                        "WHEN SKU LIKE '%-FOL' THEN REPLACE(SKU, '-FOL', '') " +
+                        "WHEN SKU LIKE '%-FOL1' THEN REPLACE(SKU, '-FOL1', '') " +
+                        "WHEN SKU LIKE '%-FOL2' THEN REPLACE(SKU, '-FOL2', '') " +
+                        "WHEN SKU LIKE '%-FOL3' THEN REPLACE(SKU, '-FOL3', '') " +
+                        "WHEN SKU LIKE '%-FBA' THEN REPLACE(SKU, '-FBA', '') " +
+                        "ELSE SKU END as sku_pick FROM `avlgear-erp-v-1-0.avlgear_erp.MDSPMList` Order by sku_pick;";
+
+  Logger.log("selectDistinctOrder : " + selectDistinctOrder);
+const request_selectDorder = {
+    query : selectDistinctOrder,
+    useLegacySql: false
+  };
+let queryResults_selectDOrder = BigQuery.Jobs.query(request_selectDorder, projectId);
+
+var resultCount = queryResults_selectDOrder.getTotalRows();
+var resultSchema = queryResults_selectDOrder.getSchema();
+var resultValues = new Array(resultCount);
+var tableRows = queryResults_selectDOrder.getRows();
+
+if(resultCount > 0){
+    // Iterate through query results
+    for (var i = 0; i < tableRows.length; i++) {
+      var cols = tableRows[i].getF();
+      resultValues[i] = new Array(cols.length);
+      // For each column, add values to the result array
+      for (var j = 0; j < cols.length; j++) {
+        resultValues[i][j] = cols[j].getV();
+      }
+      ss.getRange("M" + (i+3)).setValue(resultValues[i][0]);
+      ss.getRange("N" + (i+3)).setValue(resultValues[i][1]);
+      ss.getRange("O" + (i+3)).setValue(resultValues[i][2]);
+
+    }
+}
+
+} 
+
+
+function selectUnpickedAmList(){
+//read Am Unpicked order list
+
+var amSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('dev_AM PICK');
+
+var lastRownum = 0;
+var projectId = 'avlgear-erp-v-1-0';
+var datasetId = 'avlgear_erp';
+
+if(amSheet.getLastRow() > 2){
+  //sw num - am
+  var sn_range = amSheet.getRange('B3:B' + amSheet.getLastRow()); 
+  var sn_data = sn_range.getValues();
+  var sn_column = sn_data.map(function(row) { return row[0]; });
+
+  //qty - am
+  var q_range = amSheet.getRange('C3:C' + amSheet.getLastRow()); 
+  var q_data = q_range.getValues(); 
+  var q_column = q_data.map(function(row) { return row[0]; });
+
+  //sku_lv - am
+  var sku_range = amSheet.getRange('D3:D' + amSheet.getLastRow()); 
+  var sku_data = sku_range.getValues(); 
+  var sku_column = sku_data.map(function(row) { return row[0]; });
+
+  var chk_range = amSheet.getRange('Q3:Q' + amSheet.getLastRow()); 
+  var chk_data = chk_range.getValues(); 
+  var chk_column = chk_data.map(function(row) { return row[0]; });
+
+  const request = {
+  query : "CREATE or REPLACE Table  " + projectId + ".avlgear_erp.MDSPMList (sw_num STRING, qty INTEGER, SKU STRING, rownum INTEGER );",
+  useLegacySql: false
+  };
+  let queryResults = BigQuery.Jobs.query(request, projectId);
+
+  //2. Upload Order Input log table
+  var insert_code = "INSERT INTO " + projectId + "." + datasetId + ".MDSPMList (sw_num, qty, SKU, rownum) VALUES "
+  for(var i = 0; i < parseInt(sn_column.length); i++){
+  if(sku_column[i].length != 0 && chk_column[i] == 'No'){
+      insert_code += "('" + sn_column[i] + "', "+ q_column[i] + ", '"  +  sku_column[i] + "', " + i + "),";
+      lastRownum++;
+  }
+  } 
+  insert_code = insert_code.slice(0, -1) + ";";
+
+  Logger.log("insert_code : " + insert_code);
+  if(lastRownum > 0){
+  const request_insert = {
+      query : insert_code,
+      useLegacySql: false
+    };
+  let queryResults_insert = BigQuery.Jobs.query(request_insert, projectId);
+
+  }
+  return lastRownum;
+
+}else {
+  const request = {
+  query : "CREATE or REPLACE Table  " + projectId + ".avlgear_erp.MDSPMList (sw_num STRING, qty INTEGER, SKU STRING, rownum INTEGER );",
+  useLegacySql: false
+  };
+  let queryResults = BigQuery.Jobs.query(request, projectId);
+
+  Logger.log("lastRownum : " + lastRownum);
+
+   return lastRownum;
+}
+
+}
+
+function selectPMOrderList(lNum){
+var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('dev_AM PM PICK LIST');
+var projectId = 'avlgear-erp-v-1-0';
+var datasetId = 'avlgear_erp';
+
+//1. Select data from Orderlist 
+//sw num - am
+var snAM_range = ss.getRange('A3:A' + ss.getLastRow()); 
+var snAM_data = snAM_range.getValues(); 
+var snAM_column = snAM_data.map(function(row) { return row[0]; });
+
+//qty - am
+var qAM_range = ss.getRange('B3:B' + ss.getLastRow()); 
+var qAM_data = qAM_range.getValues(); 
+var qAM_column = qAM_data.map(function(row) { return row[0]; });
+
+//sku_lv - am
+var skuAM_range = ss.getRange('C3:C' + ss.getLastRow()); 
+var skuAM_data = skuAM_range.getValues(); 
+var skuAM_column = skuAM_data.map(function(row) { return row[0]; });
+
+
+//1. Select data from Orderlist 
+//sw num - pm
+var sn_range = ss.getRange('E3:E' + ss.getLastRow()); 
+var sn_data = sn_range.getValues(); 
+var sn_column = sn_data.map(function(row) { return row[0]; });
+
+//qty - pm
+var q_range = ss.getRange('F3:F' + ss.getLastRow()); 
+var q_data = q_range.getValues(); 
+var q_column = q_data.map(function(row) { return row[0]; });
+
+//sku_lv - pm
+var sku_range = ss.getRange('G3:G' + ss.getLastRow()); 
+var sku_data = sku_range.getValues(); 
+var sku_column = sku_data.map(function(row) { return row[0]; });
+
+var realPMOrdersSN = [];
+var realPMOrdersQ = [];
+var realPMOrdersSKU = [];
+var realPMOrderTF = [];
+
+
+for(var i = 0; i < sn_column.length; i++){
+  var isSame = 0;
+  for(var j = 0; j < snAM_column.length; j++){
+    if(sn_column[i] == snAM_column[j] && q_column[i] === qAM_column[j] && sku_column[i] == skuAM_column[j]){
+      isSame = 1;
+    }
+  }
+  if(isSame != 1){
+    Logger.log("sn_column[i] PM sorted list: " + sn_column[i] + ",  " +  q_column[i] + ", " + sku_column[i]);
+    realPMOrdersSN.push(sn_column[i]);
+    realPMOrdersQ.push(q_column[i]);
+    realPMOrdersSKU.push(sku_column[i]);
+  }
+}
+
+
+//Logger.log("ss.getLastRow() : " + ss.getLastRow());
+
+//2. Upload Order Input log table
+var insert_code = "INSERT INTO " + projectId + "." + datasetId + ".MDSPMList (sw_num, qty, SKU, rownum) VALUES "
+var isPMRow = 0;
+for(var i = 0; i < parseInt(realPMOrdersSN.length); i++){
+if(realPMOrdersSN[i].length != 0){
+    insert_code += "('" + realPMOrdersSN[i] + "', "+ realPMOrdersQ[i] + ", '"  +  realPMOrdersSKU[i] + "', " + (i+lNum) + "),";
+    isPMRow++;
+}
+} 
+insert_code = insert_code.slice(0, -1) + ";";
+
+if(isPMRow > 0) {
+const request_insert = {
+    query : insert_code,
+    useLegacySql: false
+  };
+let queryResults_insert = BigQuery.Jobs.query(request_insert, projectId);
+}
+
+}
+
+
+function clearSortedList(){
+var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('dev_AM PM PICK LIST');
+ss.getRange("I3:O500").clearContent();
+}
+
+
+function clickClearMainPageButton(){
+var ui = SpreadsheetApp.getUi();
+var response = ui.alert('Are you sure you want to clear the sheet?', ui.ButtonSet.YES_NO);
+
+if (response == ui.Button.YES) {
+  clearMainOrderPage();
+} else {
+  Logger.log('The user clicked "No" or the close button in the dialog\'s title bar.');
+}
+}
+
+function clearMainOrderPage(){
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('dev_AM PM PICK LIST');
+  ss.getRange("A3:O500").clearContent();
+}
