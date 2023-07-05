@@ -36,3 +36,7 @@ Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by us
 <p>
   <b>Apps Script -> Services -> press '+' button -> Add BigQuery, Google Spread Sheet</b>
 </p>
+
+<h5>Frequent issue happen</h5>
+1. A stock's upc pop up when scan the B stock / No table error happen 
+In this case, User might use sheets while updating DB. Because LV's data is 
