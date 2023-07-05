@@ -38,7 +38,7 @@ Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by us
 </p>
 
 <h5>Frequent issue happen</h5>
-1. A stock's upc pop up when scan the B stock / No table error happen 
-In this case, User might use sheets while updating DB. Sometimes updater forgot to run the 'initial Setting' Code. 
-2. Date format error.
-User might change the date format or 
+1. A stock's upc pop up when scan the B stock / No table error happen <br>
+In this case, User might use sheets while updating DB. Sometimes updater forgot to run the 'initial Setting' Code. <br>
+2. Date format error.<br>
+User might change the date format, or add string data where only integer format allowed. Ask user that they edit the format or there is String data in the date / number / qty cell. <br>
