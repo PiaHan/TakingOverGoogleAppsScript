@@ -1,0 +1,85 @@
+var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet Name');
+  var projectId = 'avlgear-erp-v-1-0';
+
+  var lastColumn = ss.getLastColumn();
+  var range = ss.getRange("A2:" + ss.getRange(2, lastColumn).getA1Notation());
+
+  var data = range.getValues();
+
+  var sw_id = "";
+  var qty = 0;
+  var sku = "";
+  var amz_id = "";
+  var od_date = new Date;
+  var local_status = "";
+
+  var sw_spot = "";
+  var qty_spot = "";
+  var sku_spot = "";
+  var amz_spot = "";
+  var od_spot = "";
+  var loc_spot = "";
+
+  var chkDataIsAll = 0;
+
+  for(var i = 0; i < lastColumn; i++) {
+
+    if(data[0][i] == "Qty"){
+      qty_spot = getColumnFromA1Notation(ss.getRange(2, (i+1)).getA1Notation());
+      chkDataIsAll++;
+    }
+
+    if(data[0][i] == "Order #"){
+      sw_spot = getColumnFromA1Notation(ss.getRange(2, (i+1)).getA1Notation());
+      chkDataIsAll++;
+    }
+
+    if(data[0][i] == "Item SKU"){
+      sku_spot = getColumnFromA1Notation(ss.getRange(2, (i+1)).getA1Notation());
+      chkDataIsAll++;
+    }
+
+    if(data[0][i] == "Amazon Order #"){
+      amz_spot = getColumnFromA1Notation(ss.getRange(2, (i+1)).getA1Notation());
+      chkDataIsAll++;
+    }
+
+    if(data[0][i] == "Date"){
+      od_spot = getColumnFromA1Notation(ss.getRange(2, (i+1)).getA1Notation());
+      chkDataIsAll++;
+    }
+
+    if(data[0][i] == "Local Status"){
+      loc_spot = getColumnFromA1Notation(ss.getRange(2, (i+1)).getA1Notation());
+      chkDataIsAll++;
+    }
+
+  }
+
+  if(chkDataIsAll == 6){
+    var sw_range = ss.getRange(sw_spot + "3:" + sw_spot + ss.getLastRow()); 
+    var sw_data = sw_range.getValues(); 
+    var sw_column = sw_data.map(function(row) { return row[0]; });
+
+    var qty_range = ss.getRange(qty_spot + "3:" + qty_spot + ss.getLastRow()); 
+    var qty_data = qty_range.getValues(); 
+    var qty_column = qty_data.map(function(row) { return row[0]; });
+
+    var sku_range = ss.getRange(sku_spot + "3:" + sku_spot + ss.getLastRow()); 
+    var sku_data = sku_range.getValues(); 
+    var sku_column = sku_data.map(function(row) { return row[0]; });
+
+    var amz_range = ss.getRange(amz_spot + "3:" + amz_spot + ss.getLastRow()); 
+    var amz_data = amz_range.getValues(); 
+    var amz_column = amz_data.map(function(row) { return row[0]; });
+
+    var od_range = ss.getRange(od_spot + "3:" + od_spot + ss.getLastRow()); 
+    var od_data = od_range.getValues(); 
+    var od_column = od_data.map(function(row) { return row[0]; });
+
+    var loc_range = ss.getRange(loc_spot + "3:" + loc_spot + ss.getLastRow()); 
+    var loc_data = loc_range.getValues(); 
+    var loc_column = loc_data.map(function(row) { return row[0]; });
+
+  //add insert code.
+}
