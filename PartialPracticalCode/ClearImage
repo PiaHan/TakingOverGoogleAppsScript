@@ -1,0 +1,11 @@
+function clearImage(){
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+
+  // Deletes all images in a spreadsheet
+  var images = ss.getImages();
+  for (var i = 0; i < images.length; i++) {
+    var image = images[i];
+    image.remove();
+  }
+
+}
