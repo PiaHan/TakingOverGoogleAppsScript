@@ -1,0 +1,33 @@
+//Example
+
+var sn_range = ss.getRange('A3:A' + ss.getLastRow()); 
+var sn_data = sn_range.getValues(); 
+var sn_column = sn_data.map(function(row) { return row[0]; });
+
+//qty - am
+var q_range = ss.getRange('B3:B' + ss.getLastRow()); 
+var q_data = q_range.getValues(); 
+var q_column = q_data.map(function(row) { return row[0]; });
+
+//sku_lv - am
+var sku_range = ss.getRange('C3:C' + ss.getLastRow()); 
+var sku_data = sku_range.getValues(); 
+var sku_column = sku_data.map(function(row) { return row[0]; });
+
+//if you use insert code
+//if you use rownum, you can print the data same as user input array.
+var insert_code = "INSERT INTO " + projectId + "." + datasetId + ".MDSAMList (sw_num, qty, SKU, rownum) VALUES "
+  for(var i = 0; i < parseInt(sn_column.length); i++){
+    if(sku_column[i].length != 0){
+        insert_code += "('" + sn_column[i] + "', "+ q_column[i] + ", '"  +  sku_column[i] + "', " + i + "),";
+    }
+  } 
+insert_code = insert_code.slice(0, -1) + ";";
+
+Logger.log("insert_code : " + insert_code);
+
+const request_insert = {
+    query : insert_code,
+    useLegacySql: false
+  };
+let queryResults_insert = BigQuery.Jobs.query(request_insert, projectId);
