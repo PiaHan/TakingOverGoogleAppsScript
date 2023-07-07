@@ -1,4 +1,4 @@
-//Annotation : 한국어
+//Comment : 한국어
 //버튼에 연계된 기능들을 이렇게 정리해두고 'clickSortOrders'를 assign Script 해주시면 됩니다.
 function clickSortOrders(){
   clearSortedList();
