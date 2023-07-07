@@ -49,3 +49,6 @@ Choose 'Notify Daily' or 'Notify Weekly'. Immediate error will be reported by us
 In this case, User might use sheets while updating DB. Sometimes updater forgot to run the 'initial Setting' Code. <br>
 2. Date format error.<br>
 User might change the date format, or add string data where only integer format allowed. Ask user that they edit the format or there is String data in the date / number / qty cell. <br>
+
+<h5>How to make a button</h5>
+<h5>How to trigger event to the button</h5>
