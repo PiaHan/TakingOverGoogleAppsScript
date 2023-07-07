@@ -1,3 +1,8 @@
+//Annotation : 한국어
+
+//onEdit
+//https://developers.google.com/apps-script/guides/triggers?hl=ko
+//Apps Script -> Trigger를 통해 onEdit을 Trigger로 추가해야 DB 접근 가능
 function onEdit(e){
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var projectId = 'avlgear-erp-v-1-0';
@@ -8,13 +13,17 @@ function onEdit(e){
 
     var data = ss.getDataRange().getValues();
 
+    //onEdit에서 RMA Main Sheet Tab이 바뀐 경우에만 이벤트 발생하도록 하는 코드
     if(ss.getSheetName() == "RMA Main Sheet"){
+        //Simple Trigger의 경우 실행하지 않도록 하는 코드(따로 분리해두지 않으면 이벤트 두 번 발생함.)
       if(e.triggerUid != undefined){
 
         //if user input SW Order
         if(column == 4 && data[row-1][column-1].toString().length !=0){
+            //Event 발생 spot의 값을 읽어옴.
           var sw_odnum = data[row-1][column-1];
 
+            //나머지는 비슷.
           var selectQuery = 
           "SELECT DISTINCT s.order_id, s.amazon_od,  a.sku as m_sku, a.product_sales, a.shipping_credits, " +
           "IFNULL(CAST(a.product_sales_tax AS float64), 0.00) + IFNULL(CAST(a.shipping_credits_tax AS float64), 0.00) as tax, s.paid, a.quantity, l.label_cost " +
