@@ -1,0 +1,100 @@
+function onEdit(e){
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var projectId = 'avlgear-erp-v-1-0';
+           
+    var range = e.range;
+    var row = range.getRow();
+    var column = range.getColumn();
+
+    var data = ss.getDataRange().getValues();
+
+    if(ss.getSheetName() == "RMA Main Sheet"){
+      if(e.triggerUid != undefined){
+
+        //if user input SW Order
+        if(column == 4 && data[row-1][column-1].toString().length !=0){
+          var sw_odnum = data[row-1][column-1];
+
+          var selectQuery = 
+          "SELECT DISTINCT s.order_id, s.amazon_od,  a.sku as m_sku, a.product_sales, a.shipping_credits, " +
+          "IFNULL(CAST(a.product_sales_tax AS float64), 0.00) + IFNULL(CAST(a.shipping_credits_tax AS float64), 0.00) as tax, s.paid, a.quantity, l.label_cost " +
+          "from avlgear-erp-v-1-0.avlgear_erp.rma_report_4 as s " +
+          "LEFT JOIN avlgear-erp-v-1-0.avlgear_erp.rma_report_1 as a ON s.amazon_od = a.order_id " +
+          "LEFT JOIN avlgear-erp-v-1-0.avlgear_erp.rma_report_3 as l ON s.amazon_od = l.order_id " +
+          "where s.order_id = '"+ sw_odnum +"'  and a.sku is not null and a.quantity != '' and a.quantity != '0' " +
+          "group by s.order_id, s.amazon_od, a.sku, a.product_sales, a.product_sales_tax, a.shipping_credits, a.shipping_credits_tax, a.quantity, s.paid, l.label_cost; "
+          
+          const request = {
+              query : selectQuery,
+              useLegacySql: false
+          };
+
+          let queryResults = BigQuery.Jobs.query(request, projectId);
+
+          var resultCount = queryResults.getTotalRows();
+          var resultSchema = queryResults.getSchema();
+          var resultValues = new Array(resultCount);
+          var tableRows = queryResults.getRows();
+
+          if(resultCount == 0){
+            ss.getRange("E" + row).setValue("No Data!");
+          }else if(resultCount == 1){
+           
+            // Iterate through query results
+            for (var i = 0; i < tableRows.length; i++) {
+              var cols = tableRows[i].getF();
+              resultValues[i] = new Array(cols.length);
+              // For each column, add values to the result array
+              for (var j = 0; j < cols.length; j++) {
+                resultValues[i][j] = cols[j].getV();            
+              }
+            }
+            var sw_num =  resultValues[0][0];
+            var amz_odnum = resultValues[0][1];
+            var shipped_sku = resultValues[0][2];
+            var item_price = resultValues[0][3];
+            
+            var ship_cost = resultValues[0][4];
+            var tax = resultValues[0][5];
+            var our_shipping = resultValues[0][6];
+            var sh_qty = resultValues[0][7];
+            var each_price = parseFloat(item_price / sh_qty);
+            var label_cost = resultValues[0][8];
+            var our_sh_num = our_shipping.replace("$", "");
+
+            ss.getRange("E" + row).setValue(amz_odnum);
+            ss.getRange("H" + row).setValue(shipped_sku);
+            ss.getRange("Q" + row).setValue(item_price);
+            ss.getRange("R" + row).setValue(each_price);
+            ss.getRange("S" + row).setValue(ship_cost);
+            ss.getRange("T" + row).setValue(tax);
+            ss.getRange("U" + row).setValue(our_shipping);
+            ss.getRange("W" + row).setValue(sh_qty);
+            ss.getRange("X" + row).setValue(label_cost);
+            //ss.getRange("Y" + row).setValue(sh_adjust);
+          }else{
+            var skuList = []; 
+  
+            for (var i = 0; i < tableRows.length; i++) {
+              var cols = tableRows[i].getF();
+              resultValues[i] = new Array(cols.length);
+              Logger.log("cols : " + cols);
+              // For each column, add values to the result array
+              for (var j = 0; j < cols.length; j++) {
+                resultValues[i][j] = cols[j].getV(); 
+              }
+              skuList.push(resultValues[i][2]);
+            }
+            var dropRange = ss.getRange("H" + row);
+            var rule = SpreadsheetApp.newDataValidation().requireValueInList(skuList).build();
+            dropRange.setDataValidation(rule);
+
+            ss.getRange("E" + row).setValue(resultValues[0][1]);
+            ss.getRange("U" + row).setValue(resultValues[0][6]);
+            ss.getRange("X" + row).setValue(resultValues[0][8]);
+
+          }
+        }
+    }
+  }
+}
