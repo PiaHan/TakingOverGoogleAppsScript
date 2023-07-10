@@ -52,3 +52,5 @@ User might change the date format, or add string data where only integer format 
 
 <h5>How to make a button</h5>
 <h5>How to trigger event to the button</h5>
+<h5>Additional Explanation</h5>
+<p>Video explanation of how to make DB table in Big Query console :</p><a href="https://drive.google.com/drive/folders/1XLi9X6WAIwyPKkfPtWJT3eKt89uPu-Ik?usp=sharing">Make DB Table(Location, Product)</a>
