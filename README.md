@@ -62,3 +62,8 @@ I used drawing button rather than image because image takes more time to load th
 <p>Right click -> Assign Script</p>
 <h5>Additional Explanation</h5>
 <p>Video explanation of how to make DB table in Big Query console :<a href="https://drive.google.com/drive/folders/1XLi9X6WAIwyPKkfPtWJT3eKt89uPu-Ik?usp=sharing">Make DB Table(Location, Product)</a></p>
+
+<h5>Tip</h5>
+<ul>
+  <li>add .toUpper to SKU, UPC</li>
+</ul>
