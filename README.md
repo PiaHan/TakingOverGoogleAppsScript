@@ -61,8 +61,8 @@ I used drawing button rather than image because image takes more time to load th
 <h5>How to trigger event to the button</h5>
 <p>Right click -> Assign Script</p>
 <h5>Additional Explanation</h5>
-<p>Video explanation of how to make DB table in Big Query console :<a href="https://drive.google.com/drive/folders/1XLi9X6WAIwyPKkfPtWJT3eKt89uPu-Ik?usp=sharing">Make DB Table(Location, Product)</a></p>
-<p>Document about Append DB<a href = "https://drive.google.com/drive/folders/1AiqtQYFxnrMxdz46dMgmKTquZjIfyE1D?usp=drive_link">Apped DB with Doc</a></p>
+<p>Video explanation of how to make DB table in Big Query console : <a href="https://drive.google.com/drive/folders/1XLi9X6WAIwyPKkfPtWJT3eKt89uPu-Ik?usp=sharing">Make DB Table(Location, Product)</a></p>
+<p>Document about Append DB <a href = "https://drive.google.com/drive/folders/1AiqtQYFxnrMxdz46dMgmKTquZjIfyE1D?usp=drive_link">Apped DB with Doc</a></p>
 
 <h5>Tip</h5>
 <ul>
