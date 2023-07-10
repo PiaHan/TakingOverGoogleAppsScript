@@ -51,11 +51,14 @@ In this case, User might use sheets while updating DB. Sometimes updater forgot 
 User might change the date format, or add string data where only integer format allowed. Ask user that they edit the format or there is String data in the date / number / qty cell. <br>
 3. Cell thinks 0 as null or blank.<br>
 block the range cell -> Format -> number -> plain text. <br>
-4. User input the number(integer, float) data but error message appears like 'String data can't be added to float or integer'<br>
+4. User input the number(integer, float) data but error message appears like 'String data can't be added to float or integer<br>
 block the range cell -> Format -> number -> number <br>
 These kinds of errors could happen to Date format DB too.<br>
 
 <h5>How to make a button</h5>
+<p>insert-> drawing -> start with text box.<br>
+I used drawing button rather than image because image takes more time to load than drawing button.</p>
 <h5>How to trigger event to the button</h5>
+<p>Right click -> Assign Script</p>
 <h5>Additional Explanation</h5>
 <p>Video explanation of how to make DB table in Big Query console :<a href="https://drive.google.com/drive/folders/1XLi9X6WAIwyPKkfPtWJT3eKt89uPu-Ik?usp=sharing">Make DB Table(Location, Product)</a></p>
