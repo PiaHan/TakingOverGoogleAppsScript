@@ -68,3 +68,10 @@ I used drawing button rather than image because image takes more time to load th
 <ul>
   <li>add .toUpper to SKU, UPC</li>
 </ul>
+
+
+<h5>Limit</h5>
+<ul>
+  <li>Too many rows</li>
+  <li>Too long string(when using insert SQL)</li>
+</ul>
